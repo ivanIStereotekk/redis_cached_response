@@ -15,9 +15,8 @@ async def make_request(item_id: int, ttl: int):
     url_s = [f'https://jsonplaceholder.typicode.com/posts/{item_id}',f'http://188.127.251.4:8240/posts/{item_id}']
     cached_response = client.get(item_id)
     if cached_response is None:
-        future = _loop.run_in_executor(None, requests.get,url_s[0])
+        response = requests.get(url_s[0])
         url_s[0],url_s[1] = url_s[1],url_s[0]
-        response = await future
         client.set(item_id, json.dumps(response.text))
         client.expire(item_id, ttl)
         print("Endpoint Resp:\n\n",response.text)
@@ -26,3 +25,4 @@ async def make_request(item_id: int, ttl: int):
 
 _loop = asyncio.get_event_loop()
 _loop.run_until_complete(make_request(88, 60))
+_loop.close()
