@@ -20,9 +20,13 @@ async def make_request(item_id: int, ttl: int):
         client.set(item_id, json.dumps(response.text))
         client.expire(item_id, ttl)
         print("Endpoint Resp:\n\n",response.text)
+        return response.json()
     else:
         print("Cached Resp:\n\n",json.loads(cached_response))
+        return json.loads(cached_response)
 
+future_coro = asyncio.ensure_future(make_request(88, 60))
 _loop = asyncio.get_event_loop()
-_loop.run_until_complete(make_request(88, 60))
+_loop.run_until_complete(future_coro)
 _loop.close()
+print(future_coro)
