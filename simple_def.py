@@ -9,7 +9,7 @@ urls = ['https://jsonplaceholder.typicode.com/posts/','http://188.127.251.4:8240
 
 
 def get_data(user_id,urls):
-
+    random.shuffle(urls)
     result = client.get(user_id)
     if result is None:
         response = requests.get(urls[0] )
@@ -22,12 +22,8 @@ def get_data(user_id,urls):
                     result = f"Can't connect with :\n{client}"
                     return result
         result = client.get(user_id)
-        random.shuffle(urls)
     return result
 
 
 
-
-
-
-print(get_data(68,urls))
+print(get_data(58,urls))
